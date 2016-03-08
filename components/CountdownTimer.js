@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 var _ = require('lodash');
 
 module.exports = React.createClass({
@@ -41,7 +40,9 @@ module.exports = React.createClass({
       formattedTimeRemaining = "" + formattedTimeRemaining + ".0";
     }
     return (
-      <span className="countdown">{formattedTimeRemaining}</span>
+      <span className="countdown">
+        {formattedTimeRemaining} seconds remaining
+      </span>
     );
   }
 });

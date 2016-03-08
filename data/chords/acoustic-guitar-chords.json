@@ -1,7 +1,18 @@
 [
-  { "name": "E" },
-  { "name": "F" },
-  { "name": "G" },
+  { "name": "A" },
   { "name": "Amin" },
-  { "name": "Dmin" }
+
+  { "name": "C" },
+  { "name": "C5" },
+
+  { "name": "D" },
+  { "name": "Dmin" },
+
+  { "name": "E" },
+  { "name": "Emin" },
+
+  { "name": "Fmaj7" },
+
+  { "name": "G" },
+  { "name": "G5" }
 ]

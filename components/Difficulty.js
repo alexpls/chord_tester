@@ -1,5 +1,4 @@
 var React = require('react');
-var ReactDOM = require('react-dom');
 
 module.exports = React.createClass({
   handleSelectedDifficulty: function(e) {
@@ -15,7 +14,7 @@ module.exports = React.createClass({
     return (
       <div className={className} onClick={this.handleSelectedDifficulty}>
         <p className="title">
-          {this.props.isSelected ? "[X]" : "[ ]"}
+          {this.props.isSelected ? "[X] " : "[ ] "}
           {this.props.name}
         </p>
       </div>

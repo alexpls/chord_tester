@@ -3,6 +3,10 @@ var QuestionBuilder = require('../lib/QuestionBuilder');
 var acousticChords = require('../data/chords/acoustic-guitar-chords.json');
 
 describe('QuestionBuilder', function() {
+  beforeEach(function() {
+    this.qb = new QuestionBuilder(acousticChords);
+  });
+
   describe('gets instantiated', function() {
     it('can be instantiated with an array of chords', function() {
       var qb = new QuestionBuilder(acousticChords);
@@ -20,20 +24,10 @@ describe('QuestionBuilder', function() {
   });
 
   describe('builds questions', function() {
-    beforeEach(function() {
-      this.qb = new QuestionBuilder(acousticChords);
-    });
-
     it('throws if not given number of questions to build', function() {
       var qb = this.qb;
       function complainer() { qb.buildQuestions(); }
       expect(complainer).toThrowError(/must be passed number of questions/i);
-    });
-
-    it('throws if not given number of answers to build', function() {
-      var qb = this.qb;
-      function complainer() { qb.buildQuestions(2); }
-      expect(complainer).toThrowError(/must be passed number of answers/i);
     });
 
     it('throws if not given integer for number of questions to build', function() {
@@ -42,39 +36,56 @@ describe('QuestionBuilder', function() {
       expect(complainer).toThrowError(/question count must be an integer/i);
     });
 
-    it('throws if not given integer for number of answers to build', function() {
-      var qb = this.qb;
-      function complainer() { qb.buildQuestions(12, '29'); }
-      expect(complainer).toThrowError(/answer count must be an integer/i);
-    });
-
-    it('numbering as specified', function() {
+    it('correct number of questions created', function() {
       var that = this;
       _.times(3, function() {
         var num = _.random(1, 20);
         expect(that.qb.buildQuestions(num, 1).length).toBe(num);
       });
     });
+  });
 
-    it('with the specified number of potential answers', function() {
+  describe('builds answers', function() {
+    it('throws if not given number of answers to build', function() {
+      var qb = this.qb;
+      function complainer() { qb.buildQuestions(2); }
+      expect(complainer).toThrowError(/must be passed number of answers/i);
+    });
+
+    it('throws if not given integer for number of answers to build', function() {
+      var qb = this.qb;
+      function complainer() { qb.buildQuestions(12, '29'); }
+      expect(complainer).toThrowError(/answer count must be an integer/i);
+    });
+
+    it('throws if there are fewer chords than answers requested', function() {
+      var qb = this.qb;
+      var numChords = qb.chords.length;
+      function complainer() { qb.buildQuestions(1, numChords + 1); }
+      expect(complainer).toThrowError(/must have more chords than answers/i);
+    });
+
+    it('potential answers are not repeated', function() {
+      var qs = this.qb.buildQuestions(10, 5);
+      _.each(qs, function(question) {
+        var answers = question.potentialAnswers;
+        expect(_.uniq(answers).length).toBe(answers.length);
+      });
+    });
+
+    it('correct number of answers created', function() {
       var qb = this.qb;
       _.times(3, function() {
-        var num = _.random(1, 20);
+        var num = _.random(1, qb.chords.length);
         var qs = qb.buildQuestions(10, num);
         _.each(qs, function(q) { expect(q.potentialAnswers.length).toBe(num); });
       })
     });
 
-    it('with the correct number of answers even when its chord pool is smaller', function() {
-      var numAnswers = this.qb.chords.length + 10;
-      var question = this.qb.buildQuestions(1, numAnswers)[0];
-      expect(question.potentialAnswers.length).toBe(numAnswers);
-    });
-
     it('with a single correct answer', function() {
       var qb = this.qb;
       _.times(3, function() {
-        var num = _.random(1, 20);
+        var num = _.random(1, qb.chords.length);
         var qs = qb.buildQuestions(8, num);
         _.each(qs, function(q) {
           expect(_.isPlainObject(q.correctAnswer)).toBe(true);
@@ -87,7 +98,7 @@ describe('QuestionBuilder', function() {
       var qb = this.qb;
 
       _.times(10, function() {
-        _.each(qb.buildQuestions(_.random(1, 20), _.random(1, 20)), function(question) {
+        _.each(qb.buildQuestions(_.random(1, 20), _.random(1, qb.chords.length)), function(question) {
           expect(_.indexOf(question.potentialAnswers, question.correctAnswer)).toBeGreaterThan(-1);
         });
       });
