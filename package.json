@@ -1,0 +1,21 @@
+{
+  "name": "chord_tester",
+  "version": "0.0.0",
+  "main": "main.js",
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
+    "babelify": "^7.2.0",
+    "babel-preset-react": "^6.5.0"
+  },
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "Alex Plescan",
+  "license": "ISC",
+  "description": "WIP"
+}
