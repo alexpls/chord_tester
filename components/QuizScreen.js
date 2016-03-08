@@ -1,4 +1,5 @@
 var React = require('react');
+var _ = require('lodash');
 
 var CountdownTimer = require('./CountdownTimer');
 var QuizQuestion = require('./QuizQuestion');
@@ -6,19 +7,54 @@ var ProgressText = require('./ProgressText');
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return { currentQuestionIdx: 0 }
-  },
-
-  goToNextQuestion: function() {
-    var currIdx = this.state.currentQuestionIdx;
-    var newIdx = currIdx + 1;
-    if (newIdx < this.props.questions.length) {
-      this.setState({currentQuestionIdx: this.state.currentQuestionIdx+1});
+    return {
+      currentQuestionIdx: 0,
+      questionsWithSelectedAnswers: [],
+      selectedAnswer: null
     }
   },
 
+  logSelectedAnswerAgainstCurrentQuestion: function() {
+    var selected = this.state.questionsWithSelectedAnswers;
+    var selectedAnswer = this.state.selectedAnswer;
+    var currQuestion = this.getCurrentQuestion();
+
+    selected.push({
+      question: currQuestion,
+      selectedAnswer: this.state.selectedAnswer,
+      isCorrect: currQuestion.correctAnswer.name === (selectedAnswer && selectedAnswer.name)
+    });
+
+    this.setState({questionsWithSelectedAnswers: selected});
+  },
+
+  getCurrentQuestion: function() {
+    return this.props.questions[this.state.currentQuestionIdx];
+  },
+
+  goToNextQuestion: function(selectedAnswer) {
+    var currIdx = this.state.currentQuestionIdx;
+
+    this.logSelectedAnswerAgainstCurrentQuestion();
+
+    var newIdx = currIdx + 1;
+    if (newIdx < this.props.questions.length) {
+      this.setState({ currentQuestionIdx: currIdx+1, selectedAnswer: null });
+    }
+  },
+
+  showResults: function() {
+    console.log('TODO results page');
+    console.log(this.state.questionsWithSelectedAnswers);
+  },
+
+  handleSelectedAnswer: function(selectedAnswerName) {
+    var answer = _.find(this.getCurrentQuestion().potentialAnswers, { name: selectedAnswerName });
+    this.setState({selectedAnswer: answer});
+  },
+
   render: function() {
-    var q = this.props.questions[this.state.currentQuestionIdx];
+    var q = this.getCurrentQuestion();
     var isLastQuestion = this.props.questions.length-1 === this.state.currentQuestionIdx;
 
     return (
@@ -30,8 +66,15 @@ module.exports = React.createClass({
           current={this.state.currentQuestionIdx+1}
           prefixText="Question"
         />
-        <QuizQuestion potentialAnswers={q.potentialAnswers} correctAnswer={q.correctAnswer} />
-        { !isLastQuestion && <a href="#" onClick={this.goToNextQuestion}>Next question</a> }
+        <QuizQuestion
+          potentialAnswers={q.potentialAnswers}
+          correctAnswer={q.correctAnswer}
+          selectedAnswerName={this.state.selectedAnswer ? this.state.selectedAnswer.name : null}
+          handleSelectedAnswer={this.handleSelectedAnswer}
+        />
+        { isLastQuestion ?
+          <a href="#" onClick={this.showResults}>View results</a> :
+          <a href="#" onClick={this.goToNextQuestion}>Next question</a> }
       </div>
     );
   }

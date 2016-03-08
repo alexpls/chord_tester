@@ -2,23 +2,14 @@ var React = require('react');
 var QuestionAnswer = require('./QuestionAnswer');
 
 module.exports = React.createClass({
-  getInitialState: function() {
-    return { selectedAnswerName: null };
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({ selectedAnswerName: null });
-  },
-
   onSelectedAnswer: function(name) {
-    console.log(name);
-    this.setState({ selectedAnswerName: name });
+    this.props.handleSelectedAnswer(name);
   },
 
   render: function() {
     var that = this;
     var answerNodes = _.map(this.props.potentialAnswers, function(answer) {
-      var isSelected = answer.name === that.state.selectedAnswerName;
+      var isSelected = answer.name === that.props.selectedAnswerName;
 
       return <QuestionAnswer
         key={answer.name}
