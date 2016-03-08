@@ -1,5 +1,14 @@
 install:
+  - npm install --global browserify uglify-js
   - npm install
 
 script:
   - jasmine
+
+after_success:
+  - script/update_gh_pages_repo
+
+env:
+  global:
+    - secure: iRZQffrFiR/EkEPJFQ+0RFc8IkkkPIcD28sjmr35haH90ZRvTazxfMcbb0olHPtisE/mPGJF1qB1jNpc7J74x/MKYKvoEB54716pVSbtfffAhzfPux5XUe+iAG0HbUM1fYv8NGDOfb4tFhFqtGV+6GdF+QkEEO4FBBiCBsuPZF9ioperSTaOQbfiYO49pp6cZezjD8mHxgrYewQ5ds/k3phr3hmVrTdEOYVAAGmGl4BT+kdFk9OI32kicQAB4udQqY5RBFgXVyIHmVz5Ak+pEll52PLTxWNDi7LSfDs+j+ydh9LVvwtGPmR6cNZPISIzx1ofP6w9n6LsVmiHcQGRwHfNAknetHK1Q8x1WnsXTzMFySHVX+BTS/2xQixPhf3buFQkqsvPNr30uGv9mRE3/jSe28QYyGMBizKROHOa3mNy9e+vG2iij/5tVfvMT6+LSNHsIU4d/U+5xPBdml9Mcs1sHOL+ArQrJKunJxsbP/6MlmaSCpD0u9DOThXOL6EJBiGgcMtp8spPty+8qwrFnm+RWYDXgqvqLCpnUrFdR2W1WCqdx379FoxlU/8jss6/6faX6wHPBiel1/6YNByzAoIgCiVPCXuMvW1DnUIPtCbx+ged2XTdUsf/cPXSDnlgTmFuFIHB2wI6DhVgcuWPqljQ93FxMkqGTFVCRltG8Ws=
+    - GH_PAGES_PRODUCTION_REF=github.com/alexpls/chord_tester_site.git

@@ -11,10 +11,13 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.2.0",
     "glob": "^7.0.3",
-    "jasmine": "^2.4.1"
+    "jasmine": "^2.4.1",
+    "uglify-js": "^2.6.2"
   },
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "watch": "watchify -t [ babelify --presets [react] ] main.js -o bundle.js",
+    "compile": "script/compile"
   },
   "author": "Alex Plescan",
   "license": "ISC",

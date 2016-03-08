@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+if [ $TRAVIS_BRANCH != "master" ]; then
+  echo "Not updating gh_pages as this branch isn't master, but $TRAVIS_BRANCH"
+  exit 0
+fi
+
+script/compile_site
+cd _out
+
+echo "Creating new git repo..."
+
+git init
+git config user.name "Alex Plescan (bot)"
+git config user.email "alexpls@gmail.com"
+git add .
+git commit -m "Update from master repo"
+
+echo "Pushing update to gh-pages"
+git push --force --quiet "https://${GH_ACCESS_TOKEN}@${GH_PAGES_PRODUCTION_REF}" master:gh-pages > /dev/null 2>&1
+
+echo "Done!"
