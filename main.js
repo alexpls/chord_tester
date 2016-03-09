@@ -9,6 +9,7 @@ var QuestionBuilder = require('./lib/QuestionBuilder');
 
 var StartScreen = require('./components/StartScreen');
 var QuizScreen = require('./components/QuizScreen');
+var ResultsScreen = require('./components/ResultsScreen');
 
 function main() {
   var contentElem = document.getElementById('content');
@@ -22,15 +23,30 @@ function main() {
       <QuizScreen
         secondsPerQuestion={10}
         questions={questions}
+        showResults={showResults}
         />,
+      contentElem
+    );
+  };
+
+  function showResults(results) {
+    ReactDOM.render(
+      <ResultsScreen
+        onRestart={showStartScreen}
+      />,
       contentElem
     );
   }
 
-  ReactDOM.render(
-    <StartScreen difficulties={difficulties} onStartQuiz={onStartQuiz} />,
-    contentElem
-  );
+  function showStartScreen() {
+    ReactDOM.render(
+      <StartScreen difficulties={difficulties} onStartQuiz={onStartQuiz} />,
+      contentElem
+    );
+  }
+
+  showStartScreen();
+
 }
 
 main();

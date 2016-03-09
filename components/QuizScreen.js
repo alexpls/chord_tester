@@ -24,6 +24,11 @@ module.exports = React.createClass({
     });
   },
 
+  componentWillUnmount: function() {
+    this.countdown.stop();
+    this.countdown = null;
+  },
+
   getInitialState: function() {
     return {
       currentQuestionIdx: 0,
@@ -73,8 +78,7 @@ module.exports = React.createClass({
   },
 
   showResults: function() {
-    console.log('TODO results page');
-    console.log(this.state.questionsWithSelectedAnswers);
+    this.props.showResults(this.state.questionsWithSelectedAnswers);
   },
 
   handleSelectedAnswer: function(selectedAnswerName) {
