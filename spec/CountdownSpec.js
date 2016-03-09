@@ -1,8 +1,6 @@
-// var jasmine = require('jasmine');
 var Countdown = require('../lib/Countdown');
 
 describe('Countdown', function() {
-
   beforeEach(function() {
     jasmine.clock().install();
     this.c = new Countdown(1);
@@ -10,7 +8,7 @@ describe('Countdown', function() {
 
   afterEach(function() {
     jasmine.clock().uninstall();
-  })
+  });
 
   describe('instantiates', function() {
     it('successfully with a number of seconds', function() {
@@ -148,5 +146,4 @@ describe('Countdown', function() {
     jasmine.clock().mockDate(d);
     jasmine.clock().tick(msToAdvance);
   });
-
 });
