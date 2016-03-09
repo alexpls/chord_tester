@@ -10,7 +10,8 @@ module.exports = React.createClass({
     return {
       currentQuestionIdx: 0,
       questionsWithSelectedAnswers: [],
-      selectedAnswer: null
+      selectedAnswer: null,
+      canAnswerQuestion: true
     }
   },
 
@@ -39,7 +40,10 @@ module.exports = React.createClass({
 
     var newIdx = currIdx + 1;
     if (newIdx < this.props.questions.length) {
-      this.setState({ currentQuestionIdx: currIdx+1, selectedAnswer: null });
+      this.setState({
+        currentQuestionIdx: currIdx+1, selectedAnswer: null,
+        canAnswerQuestion: true
+      });
     }
   },
 
@@ -53,6 +57,10 @@ module.exports = React.createClass({
     this.setState({selectedAnswer: answer});
   },
 
+  handleCountdownFinished: function() {
+    this.setState({ canAnswerQuestion: false });
+  },
+
   render: function() {
     var q = this.getCurrentQuestion();
     var isLastQuestion = this.props.questions.length-1 === this.state.currentQuestionIdx;
@@ -60,7 +68,10 @@ module.exports = React.createClass({
     return (
       <div className="quiz">
         <h2>THE QUIZ HAS BEGUN!</h2>
-        <CountdownTimer seconds={this.props.secondsPerQuestion} />
+        <CountdownTimer
+          seconds={this.props.secondsPerQuestion}
+          handleFinished={this.handleCountdownFinished}
+        />
         <ProgressText
           total={this.props.questions.length}
           current={this.state.currentQuestionIdx+1}
@@ -71,6 +82,7 @@ module.exports = React.createClass({
           correctAnswer={q.correctAnswer}
           selectedAnswerName={this.state.selectedAnswer ? this.state.selectedAnswer.name : null}
           handleSelectedAnswer={this.handleSelectedAnswer}
+          canAnswerQuestion={this.state.canAnswerQuestion}
         />
         { isLastQuestion ?
           <a href="#" onClick={this.showResults}>View results</a> :

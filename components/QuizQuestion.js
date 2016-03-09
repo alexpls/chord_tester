@@ -16,6 +16,7 @@ module.exports = React.createClass({
         chordName={answer.name}
         onSelectedAnswer={that.onSelectedAnswer}
         isSelected={isSelected}
+        isDisabled={!that.props.canAnswerQuestion}
       />;
     });
 

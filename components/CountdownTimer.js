@@ -27,7 +27,7 @@ module.exports = React.createClass({
       if (remaining <= 0) {
         clearInterval(that._remainingTimeInterval);
         remaining = 0;
-        console.log("Time's up!");
+        that.props.handleFinished();
       }
 
       that.setState({ remainingTimeInMs: remaining });
