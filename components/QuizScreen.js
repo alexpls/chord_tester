@@ -1,11 +1,29 @@
 var React = require('react');
 var _ = require('lodash');
 
+var Countdown = require('../lib/Countdown');
+
 var CountdownTimer = require('./CountdownTimer');
 var QuizQuestion = require('./QuizQuestion');
 var ProgressText = require('./ProgressText');
 
 module.exports = React.createClass({
+  componentDidMount: function() {
+    var that = this;
+
+    this.countdown = new Countdown(this.props.secondsPerQuestion);
+    this.countdown.start();
+    this.updateStateFromCountdown();
+
+    this.countdown.on('tick', function() {
+      that.updateStateFromCountdown();
+    });
+
+    this.countdown.on('finished', function() {
+      that.handleCountdownFinished();
+    });
+  },
+
   getInitialState: function() {
     return {
       currentQuestionIdx: 0,
@@ -13,6 +31,10 @@ module.exports = React.createClass({
       selectedAnswer: null,
       canAnswerQuestion: true
     }
+  },
+
+  updateStateFromCountdown: function() {
+    this.setState({countdownMsRemaining: this.countdown.getRemainingMs()});
   },
 
   logSelectedAnswerAgainstCurrentQuestion: function() {
@@ -40,8 +62,11 @@ module.exports = React.createClass({
 
     var newIdx = currIdx + 1;
     if (newIdx < this.props.questions.length) {
+      this.countdown.restart();
+
       this.setState({
-        currentQuestionIdx: currIdx+1, selectedAnswer: null,
+        currentQuestionIdx: currIdx+1,
+        selectedAnswer: null,
         canAnswerQuestion: true
       });
     }
@@ -70,7 +95,7 @@ module.exports = React.createClass({
         <h2>THE QUIZ HAS BEGUN!</h2>
         <CountdownTimer
           seconds={this.props.secondsPerQuestion}
-          handleFinished={this.handleCountdownFinished}
+          msRemaining={this.state.countdownMsRemaining}
         />
         <ProgressText
           total={this.props.questions.length}
