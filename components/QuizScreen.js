@@ -78,6 +78,7 @@ module.exports = React.createClass({
   },
 
   showResults: function() {
+    this.logSelectedAnswerAgainstCurrentQuestion();
     this.props.showResults(this.state.questionsWithSelectedAnswers);
   },
 

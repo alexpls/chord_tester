@@ -30,8 +30,10 @@ function main() {
   };
 
   function showResults(results) {
+    console.log('showResults', results);
     ReactDOM.render(
       <ResultsScreen
+        results={results}
         onRestart={showStartScreen}
       />,
       contentElem
