@@ -22,3 +22,5 @@ bundle.js
 
 _out
 .DS_Store
+
+assets/audio/converted
