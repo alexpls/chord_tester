@@ -1,9 +1,11 @@
 install:
+  - sudo apt-get install ffmpeg
   - npm install --global browserify uglify-js
   - npm install
 
 script:
   - jasmine
+  - ./script/compile_site
 
 after_success:
   - script/update_gh_pages_repo

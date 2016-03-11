@@ -7,7 +7,6 @@ if [ $TRAVIS_BRANCH != "master" ]; then
   exit 0
 fi
 
-script/compile_site
 cd _out
 
 echo "Creating new git repo..."
