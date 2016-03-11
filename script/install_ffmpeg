@@ -7,9 +7,9 @@ set -e
 wget http://johnvansickle.com/ffmpeg/builds/ffmpeg-git-64bit-static.tar.xz -O /tmp/ffmpeg.tar.xz
 tar -xJf /tmp/ffmpeg.tar.xz
 
-# since the name of the ffmpeg archive changes with each new version we
-# need to look it up with find
-find . -maxdepth 1 -iname "ffmpeg*" | while read fp; do
-  echo "Adding $PWD/$fp/ffmpeg to PATH"
-  export PATH=$PATH:$PWD/$fp/ffmpeg
+# The downloaded ffmpeg binary will be in a dir which we can't be sure of the name
+# of. Since we need this in a known place for the other scripts to run properly find
+# the dir that was downloaded and rename it to 'ffmpeg'.
+find . -maxdepth 1 -iname "ffmpeg*" | head -n 1 | while read fp; do
+  mv "$fp" ./ffmpeg
 done

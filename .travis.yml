@@ -1,5 +1,6 @@
 before_install:
   - ./script/install_ffmpeg
+  - export PATH=$PATH:$PWD/ffmpeg/
 
 install:
   - npm install --global browserify uglify-js
