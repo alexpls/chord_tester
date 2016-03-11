@@ -1,5 +1,7 @@
+before_install:
+  - ./script/install_ffmpeg
+
 install:
-  - sudo apt-get install ffmpeg
   - npm install --global browserify uglify-js
   - npm install
 

@@ -1,0 +1,15 @@
+#!/bin/bash
+# Install a recent version of ffmpeg on Ubuntu 12.04 64bit (which is what Travis
+# CI runs)
+
+set -e
+
+wget http://johnvansickle.com/ffmpeg/builds/ffmpeg-git-64bit-static.tar.xz -O /tmp/ffmpeg.tar.xz
+tar -xJf /tmp/ffmpeg.tar.xz
+
+# since the name of the ffmpeg archive changes with each new version we
+# need to look it up with find
+find . -maxdepth 1 -iname "ffmpeg*" | while read fp; do
+  echo "Adding $PWD/$fp/ffmpeg to PATH"
+  export PATH=$PATH:$PWD/$fp/ffmpeg
+done
