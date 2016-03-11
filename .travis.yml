@@ -4,8 +4,8 @@ install:
   - npm install
 
 script:
-  - jasmine
   - ./script/compile_site
+  - jasmine
 
 after_success:
   - script/update_gh_pages_repo
