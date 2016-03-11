@@ -21,3 +21,4 @@ bundle.js
 .bundle.js
 
 _out
+.DS_Store
