@@ -45,17 +45,7 @@ describe('chords data', function() {
       var fnComps = splitFilename(fileName);
 
       _.each(chords ,function(chord) {
-        var instrument = fnComps.instrument;
-
-        _.each(['strum', 'individual'], function(chordType) {
-          var mp3FilePath = "assets/audio/converted/" +
-            fnComps.instrument + "-" + chord.name + "-" + chordType + '.mp3';
-          expect(fs.statSync(mp3FilePath).isFile()).toBe(true);
-
-          var wavFilePath = "assets/audio/" +
-            fnComps.instrument + "-" + chord.name + "-" + chordType + '.wav';
-          expect(fs.statSync(wavFilePath).isFile()).toBe(true);
-        });
+        expect(fs.statSync(chord.audioFilePath).isFile()).toBe(true);
       });
     });
   });

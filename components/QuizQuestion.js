@@ -22,7 +22,7 @@ module.exports = React.createClass({
 
     return (
       <div className="question">
-        <p>{ "What chord is this? (pro tip: it's "+this.props.correctAnswer.name+")" }</p>
+        <p>What chord is this?</p>
         {answerNodes}
       </div>
     );

@@ -1,13 +1,30 @@
 [
-  { "name": "A" },
-  { "name": "Amin" },
-
-  { "name": "C" },
-
-  { "name": "D" },
-  { "name": "Dmin" },
-
-  { "name": "E" },
-  { "name": "Emin" }
-
+  {
+    "name": "A",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-A-strum.mp3"
+  },
+  {
+    "name": "Amin",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-Amin-strum.mp3"
+  },
+  {
+    "name": "C",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-C-strum.mp3"
+  },
+  {
+    "name": "D",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-D-strum.mp3"
+  },
+  {
+    "name": "Dmin",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-Dmin-strum.mp3"
+  },
+  {
+    "name": "E",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-E-strum.mp3"
+  },
+  {
+    "name": "Emin",
+    "audioFilePath": "assets/audio/converted/acoustic-guitar-Emin-strum.mp3"
+  }
 ]

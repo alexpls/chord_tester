@@ -2,6 +2,7 @@ var React = require('react');
 var _ = require('lodash');
 
 var Countdown = require('../lib/Countdown');
+var SoundPlayer = require('../lib/SoundPlayer');
 
 var CountdownTimer = require('./CountdownTimer');
 var QuizQuestion = require('./QuizQuestion');
@@ -10,6 +11,8 @@ var ProgressText = require('./ProgressText');
 module.exports = React.createClass({
   componentDidMount: function() {
     var that = this;
+
+    this.playChordAudio();
 
     this.countdown = new Countdown(this.props.secondsPerQuestion);
     this.countdown.start();
@@ -36,6 +39,17 @@ module.exports = React.createClass({
       selectedAnswer: null,
       canAnswerQuestion: true
     }
+  },
+
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevState.currentQuestionIdx !== this.state.currentQuestionIdx) {
+        this.playChordAudio();
+    }
+  },
+
+  playChordAudio: function() {
+    var audioFp = "./" + this.getCurrentQuestion().correctAnswer.audioFilePath;
+    SoundPlayer.play(audioFp);
   },
 
   updateStateFromCountdown: function() {
