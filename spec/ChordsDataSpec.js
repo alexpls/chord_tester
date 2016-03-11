@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var glob = require('glob');
+var fs = require('fs');
 
 describe('chords data', function() {
   beforeAll(function() {
@@ -11,6 +12,14 @@ describe('chords data', function() {
     this.chordFiles = chordFiles;
   });
 
+  function splitFilename(fn) {
+    var matches = fn.match(/\/([a-zA-Z-]+)-chords\.json$/);
+    if (!matches) { return false; }
+    return {
+      instrument: matches[1]
+    };
+  }
+
   it('currently only has one chord set defined', function() {
     expect(_.keys(this.chordFiles).length).toBe(1);
     expect(_.keys(this.chordFiles)[0]).toMatch(/acoustic-guitar-chords\.json$/);
@@ -21,6 +30,32 @@ describe('chords data', function() {
       _.each(chords, function(chord) {
         expect(_.isString(chord.name)).toBe(true);
         expect(chord.name.length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  it('has correctly formatted file name', function() {
+    _.each(this.chordFiles, function(chords, fileName) {
+      expect(splitFilename(fileName)).not.toBe(false);
+    });
+  });
+
+  it('has all the required audio files', function() {
+    _.each(this.chordFiles, function(chords, fileName) {
+      var fnComps = splitFilename(fileName);
+
+      _.each(chords ,function(chord) {
+        var instrument = fnComps.instrument;
+
+        _.each(['strum', 'individual'], function(chordType) {
+          var mp3FilePath = "assets/audio/converted/" +
+            fnComps.instrument + "-" + chord.name + "-" + chordType + '.mp3';
+          expect(fs.statSync(mp3FilePath).isFile()).toBe(true);
+
+          var wavFilePath = "assets/audio/" +
+            fnComps.instrument + "-" + chord.name + "-" + chordType + '.wav';
+          expect(fs.statSync(wavFilePath).isFile()).toBe(true);
+        });
       });
     });
   });
