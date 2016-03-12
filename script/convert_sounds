@@ -1,0 +1,7 @@
+mkdir -p _out/assets/audio/converted;
+cd assets/audio && mkdir -p converted;
+find . -iname "*.wav" | while read infile; do
+  outfile="./converted/${infile%%.wav}.mp3";
+  ffmpeg -nostdin -i "$infile" "$outfile" -y;
+  cp $outfile ../../_out/assets/audio/converted/;
+done

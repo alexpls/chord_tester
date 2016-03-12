@@ -12,12 +12,6 @@ echo "Creating JS bundle...";
 browserify main.js -t [ babelify --presets [react] ] | uglifyjs > _out/bundle.js;
 
 echo "Converting sounds...";
-mkdir -p _out/assets/audio/converted;
-cd assets/audio && mkdir -p converted;
-find . -iname "*.wav" | while read infile; do
-  outfile="./converted/${infile%%.wav}.mp3";
-  ffmpeg -nostdin -i "$infile" "$outfile" -y;
-  cp $outfile ../../_out/assets/audio/converted/;
-done
+script/convert_sounds;
 
 echo "Done!";
