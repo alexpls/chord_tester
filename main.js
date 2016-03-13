@@ -23,7 +23,7 @@ function main() {
     function finishedLoading() {
       ReactDOM.render(
         <QuizScreen
-        secondsPerQuestion={10}
+        secondsPerQuestion={30}
         questions={questions}
         showResults={showResults}
         />,

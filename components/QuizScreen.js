@@ -105,6 +105,10 @@ module.exports = React.createClass({
     this.setState({ canAnswerQuestion: false });
   },
 
+  handleReplaySound: function() {
+    this.playChordAudio();
+  },
+
   render: function() {
     var q = this.getCurrentQuestion();
     var isLastQuestion = this.props.questions.length-1 === this.state.currentQuestionIdx;
@@ -127,6 +131,7 @@ module.exports = React.createClass({
           selectedAnswerName={this.state.selectedAnswer ? this.state.selectedAnswer.name : null}
           handleSelectedAnswer={this.handleSelectedAnswer}
           canAnswerQuestion={this.state.canAnswerQuestion}
+          replaySound={this.handleReplaySound}
         />
         { isLastQuestion ?
           <a href="#" onClick={this.showResults}>View results</a> :
