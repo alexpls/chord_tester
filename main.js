@@ -21,7 +21,6 @@ function main() {
     var questions = qb.buildQuestions(10, 6);
 
     function finishedLoading() {
-      console.log('finished loading!');
       ReactDOM.render(
         <QuizScreen
         secondsPerQuestion={10}
@@ -36,6 +35,10 @@ function main() {
       return _.map(q.potentialAnswers, function(a) { return a.audioFilePath; });
     }));
 
+    ReactDOM.render(
+      <h2>Loading chords...</h2>,
+      contentElem
+    );
     SoundPlayer.preloadAudio(soundsToLoad, finishedLoading);
   };
 
