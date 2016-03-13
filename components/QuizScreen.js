@@ -48,7 +48,7 @@ module.exports = React.createClass({
   },
 
   playChordAudio: function() {
-    var audioFp = "./" + this.getCurrentQuestion().correctAnswer.audioFilePath;
+    var audioFp = this.getCurrentQuestion().correctAnswer.audioFilePath;
     SoundPlayer.play(audioFp);
   },
 

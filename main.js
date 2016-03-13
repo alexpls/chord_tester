@@ -6,6 +6,7 @@ var difficulties = require('./data/difficulties.json');
 var acousticChords = require('./data/chords/acoustic-guitar-chords.json');
 
 var QuestionBuilder = require('./lib/QuestionBuilder');
+var SoundPlayer = require('./lib/SoundPlayer');
 
 var StartScreen = require('./components/StartScreen');
 var QuizScreen = require('./components/QuizScreen');
@@ -19,14 +20,23 @@ function main() {
     var instrument = "acoustic-guitar";
     var questions = qb.buildQuestions(10, 6);
 
-    ReactDOM.render(
-      <QuizScreen
+    function finishedLoading() {
+      console.log('finished loading!');
+      ReactDOM.render(
+        <QuizScreen
         secondsPerQuestion={10}
         questions={questions}
         showResults={showResults}
         />,
-      contentElem
-    );
+        contentElem
+      );
+    }
+
+    var soundsToLoad = _.uniq(_.flatMap(questions, function(q) {
+      return _.map(q.potentialAnswers, function(a) { return a.audioFilePath; });
+    }));
+
+    SoundPlayer.preloadAudio(soundsToLoad, finishedLoading);
   };
 
   function showResults(results) {
