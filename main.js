@@ -16,30 +16,36 @@ function main() {
   var contentElem = document.getElementById('content');
 
   function onStartQuiz(difficultyId) {
-    var qb = new QuestionBuilder(acousticChords);
+    var difficulty = _.find(difficulties, { id: difficultyId });
+    var qb = new QuestionBuilder(acousticChords, difficulty);
     var instrument = "acoustic-guitar";
     var questions = qb.buildQuestions(10, 6);
 
     function finishedLoading() {
       ReactDOM.render(
         <QuizScreen
-        secondsPerQuestion={30}
+        secondsPerQuestion={difficulty.secondsPerQuestion}
         questions={questions}
         showResults={showResults}
+        difficulty={difficulty}
         />,
         contentElem
       );
     }
 
-    var soundsToLoad = _.uniq(_.flatMap(questions, function(q) {
-      return _.map(q.potentialAnswers, function(a) { return a.audioFilePath; });
+    var audioToLoad = _.uniq(_.flatMap(questions, function(q) {
+      return _.flatMap(q.potentialAnswers, function(a) {
+        return _.filter(a.variants, function(v, k) {
+          return _.indexOf(difficulty.variants, k) > -1;
+        });
+      });
     }));
 
     ReactDOM.render(
       <h2>Loading chords...</h2>,
       contentElem
     );
-    SoundPlayer.preloadAudio(soundsToLoad, finishedLoading);
+    SoundPlayer.preloadAudio(audioToLoad, finishedLoading);
   };
 
   function showResults(results) {

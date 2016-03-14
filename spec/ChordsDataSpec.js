@@ -45,7 +45,9 @@ describe('chords data', function() {
       var fnComps = splitFilename(fileName);
 
       _.each(chords ,function(chord) {
-        expect(fs.statSync(chord.audioFilePath).isFile()).toBe(true);
+        _.each(chord.variants, function(audioDetails) {
+          expect(fs.statSync(audioDetails.url).isFile()).toBe(true);
+        });
       });
     });
   });

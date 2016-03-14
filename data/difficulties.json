@@ -1,5 +1,20 @@
 [
-  { "id": "easy", "name": "Easy" },
-  { "id": "medium", "name": "Medium" },
-  { "id": "hard", "name": "Hard" }
+  {
+    "id": "easy",
+    "name": "Easy",
+    "variants": ["pluck", "strum"],
+    "secondsPerQuestion": 60
+  },
+  {
+    "id": "medium",
+    "name": "Medium",
+    "variants": ["strum"],
+    "secondsPerQuestion": 30
+  },
+  {
+    "id": "hard",
+    "name": "Hard",
+    "variants": ["strum"],
+    "secondsPerQuestion": 10
+  }
 ]

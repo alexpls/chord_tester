@@ -48,8 +48,13 @@ module.exports = React.createClass({
   },
 
   playChordAudio: function() {
-    var audioFp = this.getCurrentQuestion().correctAnswer.audioFilePath;
-    SoundPlayer.play(audioFp);
+    var that = this;
+    
+    var audioPaths = _.filter(this.getCurrentQuestion().correctAnswer.variants, function(v, k) {
+      return _.indexOf(that.props.difficulty.variants, k) > -1;
+    });
+
+    SoundPlayer.play(audioPaths);
   },
 
   updateStateFromCountdown: function() {
