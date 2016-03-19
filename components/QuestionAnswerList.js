@@ -22,7 +22,6 @@ module.exports = React.createClass({
 
     return (
       <div className="question">
-        <p>What chord is this? <a href="#" onClick={this.props.replaySound}>Hear it again</a></p>
         {answerNodes}
       </div>
     );

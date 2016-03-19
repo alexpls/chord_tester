@@ -5,7 +5,7 @@ var Countdown = require('../lib/Countdown');
 var SoundPlayer = require('../lib/SoundPlayer');
 
 var CountdownTimer = require('./CountdownTimer');
-var QuizQuestion = require('./QuizQuestion');
+var QuestionAnswerList = require('./QuestionAnswerList');
 var ProgressText = require('./ProgressText');
 
 module.exports = React.createClass({
@@ -49,7 +49,7 @@ module.exports = React.createClass({
 
   playChordAudio: function() {
     var that = this;
-    
+
     var audioPaths = _.filter(this.getCurrentQuestion().correctAnswer.variants, function(v, k) {
       return _.indexOf(that.props.difficulty.variants, k) > -1;
     });
@@ -110,10 +110,6 @@ module.exports = React.createClass({
     this.setState({ canAnswerQuestion: false });
   },
 
-  handleReplaySound: function() {
-    this.playChordAudio();
-  },
-
   render: function() {
     var q = this.getCurrentQuestion();
     var isLastQuestion = this.props.questions.length-1 === this.state.currentQuestionIdx;
@@ -130,13 +126,12 @@ module.exports = React.createClass({
           current={this.state.currentQuestionIdx+1}
           prefixText="Question"
         />
-        <QuizQuestion
+        <QuestionAnswerList
           potentialAnswers={q.potentialAnswers}
           correctAnswer={q.correctAnswer}
           selectedAnswerName={this.state.selectedAnswer ? this.state.selectedAnswer.name : null}
           handleSelectedAnswer={this.handleSelectedAnswer}
           canAnswerQuestion={this.state.canAnswerQuestion}
-          replaySound={this.handleReplaySound}
         />
         { isLastQuestion ?
           <a href="#" onClick={this.showResults}>View results</a> :
