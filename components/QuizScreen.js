@@ -1,12 +1,15 @@
 var React = require('react');
 var _ = require('lodash');
 
+// Require lib stuff
 var Countdown = require('../lib/Countdown');
 var SoundPlayer = require('../lib/SoundPlayer');
 
+// Require UI components
 var CountdownTimer = require('./CountdownTimer');
 var QuestionAnswerList = require('./QuestionAnswerList');
 var ProgressText = require('./ProgressText');
+var ChordVariantsPlayButtons = require('./ChordVariantsPlayButtons');
 
 module.exports = React.createClass({
   componentDidMount: function() {
@@ -37,24 +40,47 @@ module.exports = React.createClass({
       currentQuestionIdx: 0,
       questionsWithSelectedAnswers: [],
       selectedAnswer: null,
-      canAnswerQuestion: true
+      canAnswerQuestion: true,
+      currentlyPlayingVariant: null
     }
   },
 
   componentDidUpdate: function(prevProps, prevState) {
     if (prevState.currentQuestionIdx !== this.state.currentQuestionIdx) {
-        this.playChordAudio();
+      this.playChordAudio();
     }
+  },
+
+  chordVariants: function() {
+    return this.getCurrentQuestion().correctAnswer.variants;
   },
 
   playChordAudio: function() {
     var that = this;
 
-    var audioPaths = _.filter(this.getCurrentQuestion().correctAnswer.variants, function(v, k) {
+    var audioPaths = _.filter(this.chordVariants(), function(v, k) {
       return _.indexOf(that.props.difficulty.variants, k) > -1;
     });
 
-    SoundPlayer.play(audioPaths);
+    var currentlyPlayingIdx = 0;
+    var that = this;
+
+    function playSound() {
+      var audioInfo = audioPaths[currentlyPlayingIdx] || null;
+      that.setState({currentlyPlayingVariant: audioInfo});
+
+      if (audioInfo) {
+        currentlyPlayingSound = SoundPlayer.getOrCreateAudio(audioInfo);
+        // once we're done playing this sound queue up the next one
+        currentlyPlayingSound.once('finishedPlaying', function() {
+          currentlyPlayingIdx++;
+          playSound();
+        });
+        SoundPlayer.play(currentlyPlayingSound);
+      }
+    }
+
+    playSound();
   },
 
   updateStateFromCountdown: function() {
@@ -126,6 +152,13 @@ module.exports = React.createClass({
           current={this.state.currentQuestionIdx+1}
           prefixText="Question"
         />
+
+        <strong>What chord is this?</strong>
+        <ChordVariantsPlayButtons
+          variants={this.chordVariants()}
+          currentlyPlayingVariant={this.state.currentlyPlayingVariant}
+        />
+
         <QuestionAnswerList
           potentialAnswers={q.potentialAnswers}
           correctAnswer={q.correctAnswer}

@@ -6,6 +6,7 @@ var difficulties = require('./data/difficulties.json');
 var acousticChords = require('./data/chords/acoustic-guitar-chords.json');
 
 var QuestionBuilder = require('./lib/QuestionBuilder');
+var Sound = require('./lib/Sound');
 var SoundPlayer = require('./lib/SoundPlayer');
 
 var StartScreen = require('./components/StartScreen');
@@ -33,19 +34,21 @@ function main() {
       );
     }
 
-    var audioToLoad = _.uniq(_.flatMap(questions, function(q) {
+    var soundsToLoad = _.map(_.uniq(_.flatMap(questions, function(q) {
       return _.flatMap(q.potentialAnswers, function(a) {
         return _.filter(a.variants, function(v, k) {
           return _.indexOf(difficulty.variants, k) > -1;
         });
       });
-    }));
+    })), function(soundInfo) {
+      return new Sound(soundInfo);
+    });
 
     ReactDOM.render(
       <h2>Loading chords...</h2>,
       contentElem
     );
-    SoundPlayer.preloadAudio(audioToLoad, finishedLoading);
+    SoundPlayer.preloadAudio(soundsToLoad, finishedLoading);
   };
 
   function showResults(results) {
