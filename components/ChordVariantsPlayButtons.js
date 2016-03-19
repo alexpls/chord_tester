@@ -4,6 +4,8 @@ var React = require('react');
 var PlaybackStates = require('../lib/PlaybackStates');
 var chordVariants = require('../data/chord_variants');
 
+var PlaybackIndicator = require('./PlaybackIndicator');
+
 function getVariantDisplayName(variantKey) {
   var variant = _.find(chordVariants, {key: variantKey});
   return variant ? variant.name : null;
@@ -30,13 +32,5 @@ module.exports = React.createClass({
     return (
       <div className="chord-variants">{buttonNodes}</div>
     );
-  }
-});
-
-var PlaybackIndicator = React.createClass({
-  render: function() {
-    return (
-      <span>[{this.props.playbackState.displayName}] </span>
-    )
   }
 });
