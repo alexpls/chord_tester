@@ -17,7 +17,7 @@ cd chord_tester_site
 git config user.name "Alex Plescan"
 git config user.email "alexpls@gmail.com"
 git add .
-git commit -m "Automatic update from master repo. Commit ${TRAVIS_COMMIT}"
+git commit --allow-empty -m "Automatic update from master repo. Commit ${TRAVIS_COMMIT}"
 
 echo "Pushing update to gh-pages branch"
 git push --force --quiet "https://${GH_ACCESS_TOKEN}@${GH_PAGES_PRODUCTION_REF}" > /dev/null 2>&1
