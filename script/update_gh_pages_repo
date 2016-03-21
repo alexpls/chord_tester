@@ -7,17 +7,19 @@ if [ $TRAVIS_BRANCH != "master" ]; then
   exit 0
 fi
 
-cd _out
+echo "Cloning ${GH_PAGES_PRODUCTION_REF}..."
 
-echo "Creating new git repo..."
+git clone --single-branch --branch "gh-pages" "https://${GH_PAGES_PRODUCTION_REF}" ./chord_tester_site
+cp -r _out/* ./chord_tester_site/
 
-git init
-git config user.name "Alex Plescan (bot)"
+cd chord_tester_site
+
+git config user.name "Alex Plescan"
 git config user.email "alexpls@gmail.com"
 git add .
-git commit -m "Update from master repo"
+git commit -m "Automatic update from master repo. Commit ${TRAVIS_COMMIT}"
 
-echo "Pushing update to gh-pages"
-git push --force --quiet "https://${GH_ACCESS_TOKEN}@${GH_PAGES_PRODUCTION_REF}" master:gh-pages > /dev/null 2>&1
+echo "Pushing update to gh-pages branch"
+git push --force --quiet "https://${GH_ACCESS_TOKEN}@${GH_PAGES_PRODUCTION_REF}" > /dev/null 2>&1
 
 echo "Done!"
