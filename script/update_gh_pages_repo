@@ -9,15 +9,18 @@ fi
 
 echo "Cloning ${GH_PAGES_PRODUCTION_REF}..."
 
-git clone --single-branch --branch "gh-pages" "https://${GH_PAGES_PRODUCTION_REF}" ./chord_tester_site
+git clone --depth 1 --single-branch --branch "gh-pages" "https://${GH_PAGES_PRODUCTION_REF}" ./chord_tester_site
 cp -r _out/* ./chord_tester_site/
 
 cd chord_tester_site
 
 git config user.name "Alex Plescan"
 git config user.email "alexpls@gmail.com"
+
 git add .
-git commit --allow-empty -m "Automatic update from master repo. Commit ${TRAVIS_COMMIT}"
+git commit --allow-empty -m "Automatic update from master repo.
+
+https://github.com/alexpls/chord_tester/commit/${TRAVIS_COMMIT}"
 
 echo "Pushing update to gh-pages branch"
 git push --force --quiet "https://${GH_ACCESS_TOKEN}@${GH_PAGES_PRODUCTION_REF}" > /dev/null 2>&1
