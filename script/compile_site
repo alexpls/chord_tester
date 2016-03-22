@@ -2,16 +2,16 @@
 
 set -e
 
-echo "Creating output directory _out...";
-rm -rf _out && mkdir _out;
+echo "Creating output directory _out..."
+rm -rf _out && mkdir _out
 
-echo "Copying site files...";
-cp index.html _out/;
+echo "Copying site files..."
+cp index.html _out/
 
-echo "Creating JS bundle...";
-browserify main.js -t [ babelify --presets [react] ] | uglifyjs > _out/bundle.js;
+echo "Creating JS bundle..."
+browserify main.js -t [ babelify --presets [react] ] | uglifyjs > _out/bundle.js
 
-echo "Converting sounds...";
-script/convert_sounds;
+echo "Converting sounds..."
+script/convert_sounds
 
-echo "Done!";
+echo "Done!"
