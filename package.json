@@ -10,7 +10,8 @@
     "events": "^1.1.0",
     "lodash": "^4.6.1",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "rubin": "https://github.com/alexpls/rubin-js"
   },
   "devDependencies": {
     "babel-preset-react": "^6.5.0",
