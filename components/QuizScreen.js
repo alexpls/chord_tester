@@ -3,7 +3,6 @@ var _ = require('lodash');
 
 // Require lib stuff
 var Countdown = require('../lib/Countdown');
-var SoundPlayer = require('../lib/SoundPlayer');
 
 // Require UI components
 var CountdownTimer = require('./CountdownTimer');
@@ -56,31 +55,21 @@ module.exports = React.createClass({
   },
 
   playChordAudio: function() {
-    var that = this;
+    var soundsToPlay = _.map(this.chordVariants(), function(v) { return v.sound; })
+    var playbackPromise;
 
-    var audioPaths = _.filter(this.chordVariants(), function(v, k) {
-      return _.indexOf(that.props.difficulty.variants, k) > -1;
-    });
-
-    var currentlyPlayingIdx = 0;
-    var that = this;
-
-    function playSound() {
-      var audioInfo = audioPaths[currentlyPlayingIdx] || null;
-      that.setState({currentlyPlayingVariant: audioInfo});
-
-      if (audioInfo) {
-        currentlyPlayingSound = SoundPlayer.getOrCreateAudio(audioInfo);
-        // once we're done playing this sound queue up the next one
-        currentlyPlayingSound.once('finishedPlaying', function() {
-          currentlyPlayingIdx++;
-          playSound();
-        });
-        SoundPlayer.play(currentlyPlayingSound);
+    // Queue up our sounds to play in order. Though ideally this would be done
+    // in Rubin with something like:
+    // rubin.queue([variants.strum.sound, variants.pluck.sound]).play();
+    _.each(soundsToPlay, function(sound, idx) {
+      if (idx === 0) {
+        playbackPromise = sound.play();
+      } else {
+        playbackPromise.then(function() {
+          return sound.play()
+        })
       }
-    }
-
-    playSound();
+    })
   },
 
   updateStateFromCountdown: function() {
